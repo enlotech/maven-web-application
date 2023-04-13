@@ -1,7 +1,7 @@
 node{ 
     def mavenHome = tool name: 'maven3.9.1'
  stage('1.CodeClone'){
-    git credentialsId: 'githubCredentials', url: 'https://github.com/enlotech/maven-web-application'
+ git credentialsId: 'githubCredentials', url: 'https://github.com/enlotech/maven-web-application'
      }
  stage('2MavenBuild'){
    sh "${mavenHome}/bin/mvn package"
@@ -20,10 +20,11 @@ node{
     timeout(time:5, unit:'HOURS') {
     input message: 'Application ready for deployment, Please review and approve'
       }
-        stage('7deploy2Prod'){
+  }      
+    stage('7deploy2Prod'){
    deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', path: '', url: 'http://35.89.244.151:8080/')], contextPath: null, war: 'target/*war'
-
-    stage('8emailNotify'){
+  }
+  stage('8emailNotify'){
     
     emailext body: '''hello team,
 
